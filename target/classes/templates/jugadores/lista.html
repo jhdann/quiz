@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head><title>Jugadores</title></head>
+<body>
+<main>
+    <div class="card">
+        <div class="card-header">
+            <h1>🧑‍🤝‍🧑 Jugadores <span class="relation-label">@OneToMany ← Club</span></h1>
+            <a class="btn btn-primary" th:href="@{/jugadores/nuevo}">+ Nuevo Jugador</a>
+        </div>
+
+        <div th:if="${jugadores.empty}" class="empty-state">
+            <div class="icon">🧑‍🤝‍🧑</div>
+            <p>No hay jugadores registrados.</p>
+        </div>
+
+        <div th:unless="${jugadores.empty}" class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th><th>Apellido</th>
+                        <th>Número</th><th>Posición</th><th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="j : ${jugadores}">
+                        
+                        <td th:text="${j.nombre}"></td>
+                        <td th:text="${j.apellido}"></td>
+                        <td><span class="badge" th:text="${j.numero}"></span></td>
+                        <td th:text="${j.posicion}"></td>
+                        <td class="actions">
+                            <a class="btn btn-warning" th:href="@{/jugadores/editar/{id}(id=${j.id})}">✏️ Editar</a>
+                            <a class="btn btn-danger"  th:href="@{/jugadores/eliminar/{id}(id=${j.id})}"
+                               onclick="return confirm('¿Eliminar este jugador?')">🗑️ Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

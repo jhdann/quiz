@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head><title>Competiciones</title></head>
+<body>
+<main>
+    <div class="card">
+        <div class="card-header">
+            <h1>🏆 Competiciones <span class="relation-label">@ManyToMany ↔ Club</span></h1>
+            <a class="btn btn-primary" th:href="@{/competiciones/nueva}">+ Nueva Competición</a>
+        </div>
+
+        <div th:if="${competiciones.empty}" class="empty-state">
+            <div class="icon">🏆</div>
+            <p>No hay competiciones registradas.</p>
+        </div>
+
+        <div th:unless="${competiciones.empty}" class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th><th>Monto Premio</th>
+                        <th>Fecha Inicio</th><th>Fecha Fin</th><th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${competiciones}">
+                        
+                        <td th:text="${c.nombre}"></td>
+                        <td th:text="'$' + ${#numbers.formatInteger(c.montoPremio, 0, 'COMMA')}"></td>
+                        <td th:text="${c.fechaInicio}"></td>
+                        <td th:text="${c.fechaFin}"></td>
+                        <td class="actions">
+                            <a class="btn btn-warning" th:href="@{/competiciones/editar/{id}(id=${c.id})}">✏️ Editar</a>
+                            <a class="btn btn-danger"  th:href="@{/competiciones/eliminar/{id}(id=${c.id})}"
+                               onclick="return confirm('¿Eliminar esta competición?')">🗑️ Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

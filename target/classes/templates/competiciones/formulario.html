@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head><title>Competición – Formulario</title></head>
+<body>
+<main>
+    <div class="card">
+        <div class="card-header">
+            <h1 th:text="${competicion.id == null} ? '➕ Nueva Competición' : '✏️ Editar Competición'"></h1>
+            <a class="btn btn-secondary" th:href="@{/competiciones}">← Volver</a>
+        </div>
+
+        <form th:action="@{/competiciones/guardar}" th:object="${competicion}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" th:field="*{nombre}" class="form-control"
+                       th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'"
+                       placeholder="Ej: Copa Libertadores"/>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+                <div class="form-group">
+                    <label>Monto Premio (USD)</label>
+                    <input type="number" th:field="*{montoPremio}" class="form-control" min="0"
+                           th:classappend="${#fields.hasErrors('montoPremio')} ? 'is-invalid'"/>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('montoPremio')}" th:errors="*{montoPremio}"></div>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Inicio</label>
+                    <input type="date" th:field="*{fechaInicio}" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Fin</label>
+                    <input type="date" th:field="*{fechaFin}" class="form-control"/>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:1rem;margin-top:1.5rem">
+                <button type="submit" class="btn btn-success">💾 Guardar</button>
+                <a class="btn btn-secondary" th:href="@{/competiciones}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
