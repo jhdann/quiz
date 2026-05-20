@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head><title>Clubes</title></head>
+<body>
+<main>
+    <div class="card">
+        <div class="card-header">
+            <h1>🏟️ Clubes <span class="relation-label">Entidad Central</span></h1>
+            <a class="btn btn-primary" th:href="@{/clubes/nuevo}">+ Nuevo Club</a>
+        </div>
+
+        <div th:if="${clubes.empty}" class="empty-state">
+            <div class="icon">🏟️</div>
+            <p>No hay clubes registrados.</p>
+        </div>
+
+        <div th:unless="${clubes.empty}" class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th><th>Ciudad</th><th>Fundación</th>
+                        <th>Asociación</th><th>Entrenador</th><th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${clubes}">
+                        
+                        <td><strong th:text="${c.nombre}"></strong></td>
+                        <td th:text="${c.ciudad}"></td>
+                        <td th:text="${c.anioFundacion}"></td>
+                        <td>
+                            <span th:if="${c.asociacion != null}" class="badge" th:text="${c.asociacion.nombre}"></span>
+                            <span th:unless="${c.asociacion != null}" style="color:#a0aec0">—</span>
+                        </td>
+                        <td>
+                            <span th:if="${c.entrenador != null}" th:text="${c.entrenador.nombre + ' ' + c.entrenador.apellido}"></span>
+                            <span th:unless="${c.entrenador != null}" style="color:#a0aec0">—</span>
+                        </td>
+                        <td class="actions">
+                            <a class="btn btn-info"    th:href="@{/clubes/ver/{id}(id=${c.id})}">👁️ Ver</a>
+                            <a class="btn btn-warning" th:href="@{/clubes/editar/{id}(id=${c.id})}">✏️ Editar</a>
+                            <a class="btn btn-danger"  th:href="@{/clubes/eliminar/{id}(id=${c.id})}"
+                               onclick="return confirm('¿Eliminar este club?')">🗑️ Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>
